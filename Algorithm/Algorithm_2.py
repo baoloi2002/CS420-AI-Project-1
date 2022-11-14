@@ -5,6 +5,7 @@
 # Current cap > Capacity
 # Future value + Current value < Optimal value
 # Future number of class + Current number of class < Number of class
+# Use binary state representation class
 
 import sys
 
@@ -27,14 +28,14 @@ suffixSumVal = []
 suffixNumClass = []
 
 
-def Try(cur, cap = 0, val = 0, cntClass = 0, lstClass = {}):
+def Try(cur, cap = 0, val = 0, cntClass = 0):
     global capacity, numClasses, weights, values, classes, size, f, best, bestWay, suffixSumVal, suffixNumClass
     # Current cap > Capacity
     if cap > capacity:
         return
 
     # Update the result as soon as it's satisfied
-    if cntClass == numClasses and val > best:
+    if cntClass == (1<<numClasses)-1 and val > best:
         best = val
         bestWay = list(f)
         return
@@ -47,24 +48,12 @@ def Try(cur, cap = 0, val = 0, cntClass = 0, lstClass = {}):
         return
 
     # Future number of class + Current number of class < Number of class
-    if cntClass + suffixNumClass[cur] < numClasses:
+    if (cntClass|suffixNumClass[cur]) != (1<<numClasses)-1:
         return
 
     for i in range(2):
         f[cur] = i
-        if i:
-            if classes[cur] not in lstClass:
-                lstClass[classes[cur]] = 0
-            if lstClass[classes[cur]] == 0:
-                cntClass += 1
-            lstClass[classes[cur]] += 1
-
-        Try(cur+1, cap + i*weights[cur], val + i*values[cur], cntClass, lstClass)
-
-        if i:
-            if lstClass[classes[cur]] == 1:
-                cntClass -= 1
-            lstClass[classes[cur]] -= 1
+        Try(cur+1, cap + i*weights[cur], val + i*values[cur], cntClass|(i*(1<<(classes[cur]))))
         f[cur] = 0
 
 
@@ -78,9 +67,7 @@ def pre_calculate():
             suffixNumClass[i] = suffixNumClass[i+1]
             suffixSumVal[i] = suffixSumVal[i+1]
         suffixSumVal[i] += values[i]
-        if classes[i] not in lstClass:
-            suffixNumClass[i] += 1
-            lstClass.append(classes[i])
+        suffixNumClass[i] |= 1<<(classes[i])
 
 
 def main(inputPath, outputPath):
@@ -94,7 +81,7 @@ def main(inputPath, outputPath):
 
     weights = [int(u) for u in fi.readline().split(", ")]
     values = [int(u) for u in fi.readline().split(", ")]
-    classes = [int(u) for u in fi.readline().split(", ")]
+    classes = [int(u)-1 for u in fi.readline().split(", ")]
 
     size = len(weights)
     f = [0 for u in range(size)]
