@@ -4,9 +4,13 @@ import random
 def main(path, size):
 
     capacity = random.randint(5*size, 15*size)
-    numClasses = random.randint(5, 10)
+    if size > 40:
+        numClasses = random.randint(5, 10)
+        weights = [random.randint(1,100) for i in range(size)]
+    else:
+        numClasses = random.randint(1, 5)
+        weights = [random.randint(1,50) for i in range(size)]
 
-    weights = [random.randint(1,100) for i in range(size)]
     values = [random.randint(1,200) for i in range(size)]
     classes = [random.randint(1,numClasses) for i in range(size)]
     
