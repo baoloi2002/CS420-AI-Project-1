@@ -2,6 +2,7 @@
 # Brute force searching
 
 import sys
+import os
 
 capacity = 0
 numClasses = 0
@@ -14,7 +15,6 @@ classes = []
 best = -1
 bestWay = []
 f = []
-
 
 def updateSolution():
     global capacity, numClasses, weights, values, classes, size, f, best, bestWay
@@ -40,7 +40,7 @@ def Try(cur):
         updateSolution()
         return
 
-    for i in range(2):
+    for i in range(1, -1, -1):
         f[cur] = i
         Try(cur+1)
 
@@ -76,8 +76,23 @@ def main(inputPath, outputPath):
 
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 3):
-        print('usage:\Algorithm_1.py <input_file> <output_file>')
-        sys.exit(0)
+    if len(sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2])
+    if len(sys.argv) == 4:
+        if sys.argv[3] == 'all':
+            index = 0
+            while True:
+                input = os.path.join(sys.argv[1], "INPUT_"+str(index)+".txt")
+                output = os.path.join(sys.argv[2], "OUTPUT_"+str(index)+".txt")
+                if not os.path.exists(input):
+                    break
+                main(input, output)    
+                index += 1
+                
+
+
     
-    main(sys.argv[1], sys.argv[2])
+    print('Usage:\Algorithm_1.py <input_file> <output_file>')
+    print('Or')
+    print('To run all file:\Algorithm_1.py <input_folder> <output_folder> all')
+    sys.exit(0)

@@ -10,9 +10,9 @@ def main(path, size):
     else:
         capacity = random.randint(5*size, 15*size)
         numClasses = random.randint(1, 5)
-        weights = [random.randint(1,50) for i in range(size)]
+        weights = [random.randint(1,40) for i in range(size)]
 
-    values = [random.randint(1,300) for i in range(size)]
+    values = [random.randint(1,500) for i in range(size)]
     classes = [random.randint(1,numClasses) for i in range(size)]
     
     f = open(path, 'w')
@@ -26,6 +26,10 @@ def main(path, size):
 
 
 if __name__ == '__main__':
-    size = [5, 10, 20, 30, 40, 40, 50, 100, 200, 400, 800, 1000]    
-    for i in range(len(size)):
-        main("INPUT/INPUT_" + str(i) + ".txt", size[i])
+    index = 0
+    for i in range(10):
+        main("INPUT/INPUT_" + str(index) + ".txt", i*5 + 5)
+        index += 1
+    for i in range(10):
+        main("INPUT/INPUT_" + str(index) + ".txt", i*100 + 100)
+        index += 1
