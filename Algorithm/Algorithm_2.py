@@ -10,27 +10,10 @@
 import sys
 import os
 
-capacity = 0
-numClasses = 0
-size = 0
-
-weights = []
-values = []
-classes = []
-
-best = -1
-bestWay = []
-f = []
-
-# Sum value from i..N
-suffixSumVal = []
-
-# Number of class from i..N
-suffixNumClass = []
-
+debug = False
 
 def Try(cur, cap = 0, val = 0, cntClass = 0):
-    global capacity, numClasses, weights, values, classes, size, f, best, bestWay, suffixSumVal, suffixNumClass
+    global f, best, bestWay
     # Current cap > Capacity
     if cap > capacity:
         return
@@ -39,7 +22,6 @@ def Try(cur, cap = 0, val = 0, cntClass = 0):
     if cntClass == (1<<numClasses)-1 and val > best:
         best = val
         bestWay = list(f)
-        return
     
     if cur == size:
         return
@@ -62,7 +44,7 @@ def pre_calculate():
     global suffixSumVal, suffixNumClass, size, classes, values
     suffixSumVal = [0 for u in range(size)]
     suffixNumClass = [0 for u in range(size)]
-    lstClass = []
+    
     for i in range(size-1, -1, -1):
         if i+1 < size:
             suffixNumClass[i] = suffixNumClass[i+1]
@@ -73,6 +55,9 @@ def pre_calculate():
 
 def main(inputPath, outputPath):
     global capacity, numClasses, weights, values, classes, size, f, best, bestWay
+    best = -1
+    bestWay = []
+    f = []
 
     # INPUT
     fi = open(inputPath, "r")
@@ -107,6 +92,7 @@ def main(inputPath, outputPath):
 if __name__ == '__main__':
     if len(sys.argv) == 3:
         main(sys.argv[1], sys.argv[2])
+        sys.exit(0)
     if len(sys.argv) == 4:
         if sys.argv[3] == 'all':
             index = 0
@@ -118,8 +104,8 @@ if __name__ == '__main__':
                 print(input, output)
                 main(input, output)    
                 index += 1
+            sys.exit(0)
                 
-
 
     
     print('Usage:\Algorithm_2.py <input_file> <output_file>')

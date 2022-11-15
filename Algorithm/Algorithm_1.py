@@ -4,20 +4,10 @@
 import sys
 import os
 
-capacity = 0
-numClasses = 0
-size = 0
 
-weights = []
-values = []
-classes = []
-
-best = -1
-bestWay = []
-f = []
 
 def updateSolution():
-    global capacity, numClasses, weights, values, classes, size, f, best, bestWay
+    global best, bestWay
     cap = 0
     val = 0
     lstClass = []
@@ -35,7 +25,7 @@ def updateSolution():
             bestWay = list(f)
 
 def Try(cur):
-    global f, size
+    global f
     if cur == size:
         updateSolution()
         return
@@ -47,6 +37,8 @@ def Try(cur):
 
 def main(inputPath, outputPath):
     global capacity, numClasses, weights, values, classes, size, f, best, bestWay
+    best = -1
+    bestWay = []
 
     # INPUT
     fi = open(inputPath, "r")
@@ -78,6 +70,7 @@ def main(inputPath, outputPath):
 if __name__ == '__main__':
     if len(sys.argv) == 3:
         main(sys.argv[1], sys.argv[2])
+        sys.exit(0)
     if len(sys.argv) == 4:
         if sys.argv[3] == 'all':
             index = 0
@@ -86,8 +79,10 @@ if __name__ == '__main__':
                 output = os.path.join(sys.argv[2], "OUTPUT_"+str(index)+".txt")
                 if not os.path.exists(input):
                     break
+                print(input, output)
                 main(input, output)    
                 index += 1
+            sys.exit(0)
                 
 
 
