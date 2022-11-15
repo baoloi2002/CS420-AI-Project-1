@@ -6,11 +6,7 @@ import random
 
 def reproduce(x, y):
     w = random.randint(0, size)
-    res = [0 for i in range(size)]
-    for i in range(w):
-        res[i] = x[i]
-    for i in range(w, size):
-        res[i] = y[i]
+    res = x[:w] + y[w:]
     return res
 
 def genRandom():
@@ -19,11 +15,28 @@ def genRandom():
 
 def getRandom(point, sum):
     w = random.randint(1, sum)
-    for u, v in point.items():
-        w -= v
-        if w <=0:
-            return u
-    return 0
+    l = 0
+    r = len(point)-1
+    ans = 0
+    while l<=r:
+        mid = (l+r)//2
+        if point[mid][1] <= w:
+            ans = mid
+            l = mid+1
+        else:
+            r = mid-1
+    return point[ans][0]
+
+def countBit(u):
+    u = int(u)
+    cnt = 0
+    u = 1
+    while u > 0:
+        if u&1:
+            cnt += 1
+        u >>= 1
+    return cnt
+
 
 def calculate(f):
     # add 1 for the case this individual is not accept the condition
@@ -39,38 +52,72 @@ def calculate(f):
         return 1
     return val+1
 
+def calculatePoint(f):
+    point = {}
+    mi = 10000000000000
+    for i in range(len(f)):
+        point[i] = calculate(f[i])
+        mi = min(mi, point[i])
+    
+    for i in range(len(f)):
+        point[i] -= mi
+        point[i] += 1
+
+    point = dict(sorted(point.items(),key= lambda x:x[1], reverse=True))
+    return point
+
+
+
+
 def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
     old_individual = [genRandom() for _ in range(population)]
     new_individual = []
-    point = {}
-    for i in range(population):
-        point[i] = calculate(old_individual[i])
-    point = dict(sorted(point.items(),key= lambda x:x[1], reverse=True))
+    point = calculatePoint(old_individual)
     
     for cycle in range(cycles):
         new_individual = list()
         sum = 0
+        tmpPoint = []
+        last = 0
         for u, v in point.items():
             sum += v
+
+            tmpPoint.append([u, v+last])
+            last += v
         for i in range(population):
-            u = old_individual[getRandom(point, sum)]
-            v = old_individual[getRandom(point, sum)]
+            u = old_individual[getRandom(tmpPoint, sum)]
+            v = old_individual[getRandom(tmpPoint, sum)]
 
             newChild = reproduce(u, v)
 
             if random.random() <= mutation:
-                newChild[random.randint(0,size-1)] = random.randint(0, 1)
+                newChild[random.randint(0,size-1)] ^= 1
             
             new_individual.append(newChild)
         old_individual = list(new_individual)
-        for i in range(population):
-            point[i] = calculate(old_individual[i])
-        point = dict(sorted(point.items(),key= lambda x:x[1], reverse=True))
+        point = calculatePoint(old_individual)
     
-    point = dict(sorted(point.items(),key= lambda x:x[1], reverse=True))
+    point = calculatePoint(old_individual)
     for u, v in point.items():
         return old_individual[u]
 
+def updateSolution(f):
+    global best, bestWay
+    cap = 0
+    val = 0
+    lstClass = []
+
+    for i in range(size):
+        if f[i]:
+            cap += weights[i]
+            val += values[i]
+            lstClass.append(classes[i])
+            
+    lstClass = set(lstClass)
+    if cap <= capacity and len(lstClass) == numClasses:
+        if val > best:
+            best = val
+            bestWay = list(f)
 
 def main(inputPath, outputPath):
     global capacity, numClasses, weights, values, classes, size, best, bestWay
@@ -92,12 +139,8 @@ def main(inputPath, outputPath):
 
     #solve
     # mutation between 0..1
-    bestWay = geneticAlgorithm(500, 1000, 0.3)
-    best = calculate(bestWay) -1
-    if best <= 0:
-        best = -1
-        bestWay = list()
-
+    updateSolution(geneticAlgorithm(500, 1000, 0.3))
+    
     fi.close()
 
     # OUTPUT
