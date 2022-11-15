@@ -1,22 +1,12 @@
 # ALGORITHM 4
 # Genetic algorithms
-
 import sys
-
-capacity = 0
-numClasses = 0
-size = 0
-
-weights = []
-values = []
-classes = []
-
-best = -1
-bestWay = []
-
+import os
 
 def main(inputPath, outputPath):
-    global capacity, numClasses, weights, values, classes, size, f, best, bestWay
+    global capacity, numClasses, weights, values, classes, size, best, bestWay
+    best = -1
+    bestWay = []
 
     # INPUT
     fi = open(inputPath, "r")
@@ -26,12 +16,12 @@ def main(inputPath, outputPath):
 
     weights = [int(u) for u in fi.readline().split(", ")]
     values = [int(u) for u in fi.readline().split(", ")]
-    classes = [int(u) for u in fi.readline().split(", ")]
+    classes = [int(u)-1 for u in fi.readline().split(", ")]
 
     size = len(weights)
     f = [0 for u in range(size)]
 
-    # SOLVE
+    #solve
 
     fi.close()
 
@@ -45,8 +35,25 @@ def main(inputPath, outputPath):
 
 
 if __name__ == '__main__':
-    if (len(sys.argv) != 3):
-        print('usage:\Algorithm_4.py <input_file> <output_file>')
+    if len(sys.argv) == 3:
+        main(sys.argv[1], sys.argv[2])
         sys.exit(0)
+    if len(sys.argv) == 4:
+        if sys.argv[3] == 'all':
+            index = 0
+            while True:
+                input = os.path.join(sys.argv[1], "INPUT_"+str(index)+".txt")
+                output = os.path.join(sys.argv[2], "OUTPUT_"+str(index)+".txt")
+                if not os.path.exists(input):
+                    break
+                print(input, output)
+                main(input, output)    
+                index += 1
+            sys.exit(0)
+                
+
     
-    main(sys.argv[1], sys.argv[2])
+    print('Usage:\Algorithm_4.py <input_file> <output_file>')
+    print('Or')
+    print('To run all file:\Algorithm_4.py <input_folder> <output_folder> all')
+    sys.exit(0)
