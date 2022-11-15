@@ -3,7 +3,7 @@
 # Update the result as soon as it's satisfied
 # Prune branches when:
 # Current cap > Capacity
-# Future value + Current value < Optimal value
+# Future value + Current value <= Optimal value
 # Future number of class + Current number of class < Number of class
 # Use binary state representation class
 
@@ -27,7 +27,7 @@ def Try(cur, cap = 0, val = 0, cntClass = 0):
         return
 
     # Future value + Current value < Optimal value
-    if val + suffixSumVal[cur] < best:
+    if val + suffixSumVal[cur] <= best:
         return
 
     # Future number of class + Current number of class < Number of class
