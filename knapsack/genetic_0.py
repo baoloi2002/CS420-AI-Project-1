@@ -1,17 +1,10 @@
 # ALGORITHM 4
 # Genetic algorithms
-'''
-    penClass = countBit(classMask) / numClasses
-    penClass**=2
-    penCap = capacity - cap
-    penCap /= capacity
-    return  (val**2)*penClass + penCap*val + val
-'''
-
+# if cap > capacity or classMask != (1<<numClasses)-1: return 1
+# else: return val+1
 import sys
 import os
 import random
-import math
 
 def reproduce(x, y):
     w = random.randint(0, size)
@@ -23,7 +16,7 @@ def genRandom():
     return res
 
 def getRandom(point, sum):
-    w = random.random()*sum
+    w = random.randint(1, sum)
     l = 0
     r = len(point)-1
     ans = 0
@@ -57,26 +50,20 @@ def calculate(f):
             cap += weights[i]
             val += values[i]
             classMask |= (1<<classes[i])
-    penClass = countBit(classMask) / numClasses
-    penClass**=2
-    penCap = capacity - cap
-    penCap /= capacity
-    return  (val**2)*penClass + penCap*val + val
+    if cap > capacity or classMask != (1<<numClasses)-1:
+        return 1
+    return val+1
 
 def calculatePoint(f):
-    # stable softmax ?
     point = {}
+    mi = 10000000000000
     for i in range(len(f)):
         point[i] = calculate(f[i])
-    mx = point[0]
-    sum = 0
+        mi = min(mi, point[i])
+    
     for i in range(len(f)):
-        mx = max(mx, point[i])
-    for i in range(len(f)):
-        point[i] = math.exp(point[i]-mx)
-        sum += point[i]
-    for i in range(len(f)):
-        point[i] /= sum
+        point[i] -= mi
+        point[i] += 1
 
     return point
 
@@ -95,8 +82,9 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         last = 0
         for u, v in point.items():
             sum += v
-            tmpPoint.append([u, sum])
 
+            tmpPoint.append([u, v+last])
+            last += v
         for i in range(population):
             u = old_individual[getRandom(tmpPoint, sum)]
             v = old_individual[getRandom(tmpPoint, sum)]
