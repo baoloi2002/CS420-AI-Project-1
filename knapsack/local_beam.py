@@ -1,9 +1,11 @@
 # ALGORITHM 3
 # Local beam search
 
-
 import sys
 import os
+
+def test():
+    return 5
 
 def main(inputPath, outputPath):
     global capacity, numClasses, weights, values, classes, size, best, bestWay
