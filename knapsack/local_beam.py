@@ -1,63 +1,71 @@
 # ALGORITHM 3
 # Local beam search
-
-import sys
 import os
 
-def test():
-    return 5
+MAX_STEP = 100
+MAX_SURVIVE = 5
 
-def main(inputPath, outputPath):
-    global capacity, numClasses, weights, values, classes, size, best, bestWay
-    best = -1
-    bestWay = []
+def class_count(state):
+	c = 0
+	for i in range(size):
+		if state[i]:
+			c |= 1 << classes[i]
+	return c.bit_count()
 
-    # INPUT
-    fi = open(inputPath, "r")
+def weight_count(state):
+	return sum([weights[i] for i in range(size) if state[i]])
 
-    capacity = int(fi.readline())
-    numClasses = int(fi.readline())
+def valid(state):
+	return weight_count(state) <= capacity
 
-    weights = [int(u) for u in fi.readline().split(", ")]
-    values = [int(u) for u in fi.readline().split(", ")]
-    classes = [int(u)-1 for u in fi.readline().split(", ")]
+def value_of(state):
+	v = sum([values[i] for i in range(size) if state[i]])
+	return v
 
-    size = len(weights)
-    f = [0 for u in range(size)]
+def fitness(state):
+	c = numClasses - class_count(state)
+	w = weight_count(state)
+	pen = c**2 * max(values) + w * sum(values) / sum(weights)
+	score = value_of(state) - pen
+	return score
 
-    #solve
+def get_childs(state):
+	childs = []
+	for i in range(size):
+		if state[i] == 0:
+			new_state = state.copy()
+			new_state[i] = 1
+			if valid(new_state): 
+				childs.append(new_state)
+	return childs
 
-    fi.close()
+def test(state):
+	global best_value, best_state
+	if class_count(state) == numClasses and value_of(state) > best_value:
+		best_value = value_of(state)
+		best_state = state
 
-    # OUTPUT
-    fo = open(outputPath, "w")
+def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
+	global size, capacity, numClasses, weights, values, classes
+	size, capacity, numClasses, weights, values, classes = _size, _capacity, _numClasses, _weights, _values, _classes
 
-    fo.write(str(best) + "\n")
-    fo.write(", ".join([str(u) for u in bestWay]))
+	global best_value, best_state
+	best_value, best_state = -1, []
 
-    fo.close()
+	initial_state = [0 for i in range(size)]
+	queue = [initial_state]
+	for step in range(MAX_STEP):
+		print(f'>> local beam step: {step}')
+		childs = []
+		for state in queue:
+			childs.extend(get_childs(state))
 
+		for state in childs: 
+			test(state)
 
-if __name__ == '__main__':
-    if len(sys.argv) == 3:
-        main(sys.argv[1], sys.argv[2])
-        sys.exit(0)
-    if len(sys.argv) == 4:
-        if sys.argv[3] == 'all':
-            index = 0
-            while True:
-                input = os.path.join(sys.argv[1], "INPUT_"+str(index)+".txt")
-                output = os.path.join(sys.argv[2], "OUTPUT_"+str(index)+".txt")
-                if not os.path.exists(input):
-                    break
-                print(input, output)
-                main(input, output)    
-                index += 1
-            sys.exit(0)
-                
+		print(f'>> current found: {best_value}')
+		
+		childs.sort(key=fitness, reverse=True)
+		queue = childs[:MAX_SURVIVE]
 
-    
-    print('Usage:\Algorithm_3.py <input_file> <output_file>')
-    print('Or')
-    print('To run all file:\Algorithm_3.py <input_folder> <output_folder> all')
-    sys.exit(0)
+	return best_value, best_state
