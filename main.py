@@ -21,6 +21,8 @@ def output(path, best, bestWay):
     fo.write(", ".join([str(u) for u in bestWay]))
 
 def process(inputPath, outputPath, algo):
+    print(f'>> process file: {inputPath} {outputPath}')
+
     # INPUT
     size, capacity, numClasses, weights, values, classes = input(inputPath)
     
