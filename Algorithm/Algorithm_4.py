@@ -139,7 +139,7 @@ def main(inputPath, outputPath):
 
     #solve
     # mutation between 0..1
-    updateSolution(geneticAlgorithm(500, 1000, 0.3))
+    updateSolution(geneticAlgorithm(500, 5000, 0.3))
     
     fi.close()
 
