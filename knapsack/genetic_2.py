@@ -72,34 +72,12 @@ def calculatePoint(f):
     return point
 
 
-def updateSolution(f):
-    global best, bestWay
-    cap = 0
-    val = 0
-    lstClass = []
-
-    for i in range(size):
-        if f[i]:
-            cap += weights[i]
-            val += values[i]
-            lstClass.append(classes[i])
-            
-    lstClass = set(lstClass)
-    if cap <= capacity and len(lstClass) == numClasses:
-        if val > best:
-            best = val
-            bestWay = list(f)
-
-def upSols(lstSol):
-    for u in lstSol:
-        updateSolution(u)
 
 
 def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
     old_individual = [genRandom() for _ in range(population)]
     new_individual = []
     point = calculatePoint(old_individual)
-    upSols(old_individual)
     
     for cycle in range(cycles):
         new_individual = list()
@@ -120,9 +98,30 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
             
             new_individual.append(newChild)
         old_individual = list(new_individual)
-        upSols(old_individual)
         point = calculatePoint(old_individual)
+    
+    point = calculatePoint(old_individual)
+    point = dict(sorted(point.items(),key= lambda x:x[1], reverse=True))
+    for u, v in point.items():
+        return old_individual[u]
 
+def updateSolution(f):
+    global best, bestWay
+    cap = 0
+    val = 0
+    lstClass = []
+
+    for i in range(size):
+        if f[i]:
+            cap += weights[i]
+            val += values[i]
+            lstClass.append(classes[i])
+            
+    lstClass = set(lstClass)
+    if cap <= capacity and len(lstClass) == numClasses:
+        if val > best:
+            best = val
+            bestWay = list(f)
 
 def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
     global size, capacity, numClasses, weights, values, classes
@@ -134,6 +133,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(500, 500, 0.3)
+    updateSolution(geneticAlgorithm(500, 500, 0.3))
 
     return best, bestWay
