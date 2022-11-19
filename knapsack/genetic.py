@@ -1,15 +1,9 @@
 # ALGORITHM 4
 # Genetic algorithms
-'''
-    penClass = countBit(classMask) / numClasses
-    penClass**=2
-    penCap = capacity - cap
-    penCap /= capacity
-    return  (val**2)*penClass + penCap*val + val
-'''
+"""
+    score = val*val/cap
+"""
 
-import sys
-import os
 import random
 import math
 
@@ -48,7 +42,6 @@ def countBit(u):
 
 
 def calculate(f):
-    # add 1 for the case this individual is not accept the condition
     classMask = 0
     cap = 0
     val = 0
@@ -57,11 +50,9 @@ def calculate(f):
             cap += weights[i]
             val += values[i]
             classMask |= (1<<classes[i])
-    penClass = countBit(classMask) / numClasses
-    penClass**=2
-    penCap = capacity - cap
-    penCap /= capacity
-    return  (val**2)*penClass + penCap*val + val
+    if cap > capacity or classMask != (1<<numClasses)-1:
+        return 1
+    return val*val/cap
 
 def calculatePoint(f):
     # stable softmax ?
@@ -92,7 +83,6 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         new_individual = list()
         sum = 0
         tmpPoint = []
-        last = 0
         for u, v in point.items():
             sum += v
             tmpPoint.append([u, sum])
@@ -137,11 +127,12 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
     global size, capacity, numClasses, weights, values, classes
     size, capacity, numClasses, weights, values, classes = _size, _capacity, _numClasses, _weights, _values, _classes
 
-    global best, bestWay
+    global best, bestWay, f
     best, bestWay = -1, []
+    f = [0 for _ in range(size)]
 
     #solve
     # mutation between 0..1
-    updateSolution(geneticAlgorithm(1000, 1000, 0.5))
+    updateSolution(geneticAlgorithm(500, 500, 0.3))
 
     return best, bestWay

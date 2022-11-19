@@ -2,9 +2,9 @@
 # Genetic algorithms
 # if cap > capacity or classMask != (1<<numClasses)-1: return 1
 # else: return val+1
-import sys
-import os
+
 import random
+import math
 
 def reproduce(x, y):
     w = random.randint(0, size)
@@ -16,7 +16,7 @@ def genRandom():
     return res
 
 def getRandom(point, sum):
-    w = random.randint(1, sum)
+    w = random.random()*sum
     l = 0
     r = len(point)-1
     ans = 0
@@ -41,7 +41,6 @@ def countBit(u):
 
 
 def calculate(f):
-    # add 1 for the case this individual is not accept the condition
     classMask = 0
     cap = 0
     val = 0
@@ -55,15 +54,19 @@ def calculate(f):
     return val+1
 
 def calculatePoint(f):
+    # stable softmax ?
     point = {}
-    mi = 10000000000000
     for i in range(len(f)):
         point[i] = calculate(f[i])
-        mi = min(mi, point[i])
-    
+    mx = point[0]
+    sum = 0
     for i in range(len(f)):
-        point[i] -= mi
-        point[i] += 1
+        mx = max(mx, point[i])
+    for i in range(len(f)):
+        point[i] = math.exp(point[i]-mx)
+        sum += point[i]
+    for i in range(len(f)):
+        point[i] /= sum
 
     return point
 
@@ -79,12 +82,10 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         new_individual = list()
         sum = 0
         tmpPoint = []
-        last = 0
         for u, v in point.items():
             sum += v
+            tmpPoint.append([u, sum])
 
-            tmpPoint.append([u, v+last])
-            last += v
         for i in range(population):
             u = old_individual[getRandom(tmpPoint, sum)]
             v = old_individual[getRandom(tmpPoint, sum)]
@@ -131,6 +132,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    updateSolution(geneticAlgorithm(1000, 1000, 0.5))
+    updateSolution(geneticAlgorithm(500, 500, 0.3))
 
     return best, bestWay

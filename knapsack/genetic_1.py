@@ -8,8 +8,6 @@
     return  (val**2)*penClass + penCap*val + val
 '''
 
-import sys
-import os
 import random
 import math
 
@@ -92,7 +90,6 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         new_individual = list()
         sum = 0
         tmpPoint = []
-        last = 0
         for u, v in point.items():
             sum += v
             tmpPoint.append([u, sum])
@@ -143,6 +140,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    updateSolution(geneticAlgorithm(1000, 1000, 0.5))
+    updateSolution(geneticAlgorithm(500, 500, 0.3))
 
     return best, bestWay
