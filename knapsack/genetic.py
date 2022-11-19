@@ -1,7 +1,9 @@
 # ALGORITHM 4
 # Genetic algorithms
 """
-    score = val*val/cap
+    if cap > capacity or classMask != (1<<numClasses)-1:
+        return -1
+    return val*val/cap
 """
 
 import random
@@ -51,7 +53,7 @@ def calculate(f):
             val += values[i]
             classMask |= (1<<classes[i])
     if cap > capacity or classMask != (1<<numClasses)-1:
-        return -1
+        return -100000
     return val*val/cap
 
 def calculatePoint(f):
@@ -85,6 +87,7 @@ def updateSolution(f):
             lstClass.append(classes[i])
             
     lstClass = set(lstClass)
+    
     if cap <= capacity and len(lstClass) == numClasses:
         if val > best:
             best = val
@@ -115,8 +118,9 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
 
             newChild = reproduce(u, v)
 
-            if random.random() <= mutation:
-                newChild[random.randint(0,size-1)] ^= 1
+            for j in range(size):
+                if random.random() <= mutation:
+                    newChild[j] ^= 1
             
             new_individual.append(newChild)
         old_individual = list(new_individual)
@@ -134,6 +138,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(1000, 1000, 0.5)
+    geneticAlgorithm(500, 500, 0.00035)
 
     return best, bestWay
