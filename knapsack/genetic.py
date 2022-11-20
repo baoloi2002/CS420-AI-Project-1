@@ -3,7 +3,7 @@
 """
     if cap > capacity or classMask != (1<<numClasses)-1:
         return -INF
-    return val
+    return val*val/cap
 """
 
 import random
@@ -45,7 +45,7 @@ def countBit(u):
 
 def calculate(f):
     classMask = 0
-    cap = 0
+    cap = 0.00001
     val = 0
     for i in range(size):
         if f[i]:
@@ -54,7 +54,7 @@ def calculate(f):
             classMask |= (1<<classes[i])
     if cap > capacity or classMask != (1<<numClasses)-1:
         return 0.001
-    return val*val/cap
+    return val*val/cap + 0.001
 
 def calculatePoint(f):
     # stable softmax ?
@@ -124,6 +124,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(100, 100, 0.001)
+    geneticAlgorithm(100, 50000, 0.001)
 
     return best, bestWay
