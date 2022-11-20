@@ -54,7 +54,7 @@ def calculate(f):
             classMask |= (1<<classes[i])
     if cap > capacity or classMask != (1<<numClasses)-1:
         return 0.001
-    return val
+    return val*val/cap
 
 def calculatePoint(f):
     # stable softmax ?
