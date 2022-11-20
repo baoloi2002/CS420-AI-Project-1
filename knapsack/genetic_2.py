@@ -53,7 +53,7 @@ def calculate(f):
             val += values[i]
             classMask |= (1<<classes[i])
     if cap > capacity or classMask != (1<<numClasses)-1:
-        return -1
+        return -100000
     return val*val/cap
 
 def calculatePoint(f):
@@ -138,6 +138,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(500, 500, 0.001)
+    geneticAlgorithm(500, 500, 0.00035)
 
     return best, bestWay

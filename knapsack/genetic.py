@@ -1,10 +1,12 @@
 # ALGORITHM 4
 # Genetic algorithms
-"""
-    if cap > capacity or classMask != (1<<numClasses)-1:
-        return -1
-    return val*val/cap
-"""
+'''
+    penClass = countBit(classMask) / numClasses
+    penClass**=2
+    penCap = capacity - cap
+    penCap /= capacity
+    return  (val**2)*penClass + penCap*val + val
+'''
 
 import random
 import math
@@ -25,11 +27,11 @@ def getRandom(point, sum):
     ans = 0
     while l<=r:
         mid = (l+r)//2
-        if point[mid][1] <= w:
+        if w <= point[mid][1] :
             ans = mid
-            l = mid+1
-        else:
             r = mid-1
+        else:
+            l = mid+1
     return point[ans][0]
 
 def countBit(u):
@@ -53,24 +55,14 @@ def calculate(f):
             val += values[i]
             classMask |= (1<<classes[i])
     if cap > capacity or classMask != (1<<numClasses)-1:
-        return -100000
-    return val*val/cap
+        return 0.1
+    return val
 
 def calculatePoint(f):
     # stable softmax ?
     point = {}
     for i in range(len(f)):
         point[i] = calculate(f[i])
-    mx = point[0]
-    sum = 0
-    for i in range(len(f)):
-        mx = max(mx, point[i])
-    for i in range(len(f)):
-        point[i] = math.exp(point[i]-mx)
-        sum += point[i]
-    for i in range(len(f)):
-        point[i] /= sum
-
     return point
 
 
@@ -84,10 +76,8 @@ def updateSolution(f):
         if f[i]:
             cap += weights[i]
             val += values[i]
-            lstClass.append(classes[i])
-            
+            lstClass.append(classes[i])    
     lstClass = set(lstClass)
-    
     if cap <= capacity and len(lstClass) == numClasses:
         if val > best:
             best = val
@@ -111,7 +101,6 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         for u, v in point.items():
             sum += v
             tmpPoint.append([u, sum])
-
         for i in range(population):
             u = old_individual[getRandom(tmpPoint, sum)]
             v = old_individual[getRandom(tmpPoint, sum)]
@@ -127,7 +116,6 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         upSols(old_individual)
         point = calculatePoint(old_individual)
 
-
 def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
     global size, capacity, numClasses, weights, values, classes
     size, capacity, numClasses, weights, values, classes = _size, _capacity, _numClasses, _weights, _values, _classes
@@ -138,6 +126,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(500, 500, 0.00035)
+    geneticAlgorithm(100, 10000, 0.001)
 
     return best, bestWay

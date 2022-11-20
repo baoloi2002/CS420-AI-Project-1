@@ -1,10 +1,12 @@
 # ALGORITHM 4
 # Genetic algorithms
-"""
-    if cap > capacity or classMask != (1<<numClasses)-1:
-        return -1
-    return val
-"""
+'''
+    penClass = countBit(classMask) / numClasses
+    penClass**=2
+    penCap = capacity - cap
+    penCap /= capacity
+    return  (val**2)*penClass + penCap*val + val
+'''
 
 import random
 import math
@@ -52,9 +54,11 @@ def calculate(f):
             cap += weights[i]
             val += values[i]
             classMask |= (1<<classes[i])
-    if cap > capacity or classMask != (1<<numClasses)-1:
-        return -1
-    return val
+    penClass = countBit(classMask) / numClasses
+    penClass**=2
+    penCap = capacity - cap
+    penCap /= capacity
+    return  (val**2)*penClass + penCap*val + val
 
 def calculatePoint(f):
     # stable softmax ?
@@ -87,7 +91,7 @@ def updateSolution(f):
             lstClass.append(classes[i])
             
     lstClass = set(lstClass)
-    
+
     if cap <= capacity and len(lstClass) == numClasses:
         if val > best:
             best = val
@@ -138,6 +142,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(500, 500, 0.001)
+    geneticAlgorithm(500, 500, 0.00035)
 
     return best, bestWay
