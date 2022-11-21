@@ -55,7 +55,7 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 	initial_state = [0 for i in range(size)]
 	queue = [initial_state]
 	for step in range(MAX_STEP):
-		print(f'>> local beam step: {step}')
+		#print(f'>> local beam step: {step}')
 		childs = []
 		for state in queue:
 			childs.extend(get_childs(state))
@@ -63,7 +63,7 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 		for state in childs: 
 			test(state)
 
-		print(f'>> current found: {best_value}')
+		#print(f'>> current found: {best_value}')
 		
 		childs.sort(key=fitness, reverse=True)
 		queue = childs[:MAX_SURVIVE]
