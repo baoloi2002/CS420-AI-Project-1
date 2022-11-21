@@ -57,7 +57,6 @@ def calculate(f):
     return val+0.001
 
 def calculatePoint(f):
-    # stable softmax ?
     point = {}
     for i in range(len(f)):
         point[i] = calculate(f[i])
@@ -124,6 +123,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(100, 100, 0.001)
+    geneticAlgorithm(500, 500, 0.001)
 
     return best, bestWay

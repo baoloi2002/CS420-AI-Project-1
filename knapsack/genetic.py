@@ -124,6 +124,6 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 
     #solve
     # mutation between 0..1
-    geneticAlgorithm(100, 50000, 0.001)
+    geneticAlgorithm(500, 500, 0.001)
 
     return best, bestWay
