@@ -9,6 +9,7 @@
 
 import sys
 import os
+sys.setrecursionlimit(2000)
 
 debug = False
 
