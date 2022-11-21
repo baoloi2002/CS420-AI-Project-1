@@ -68,6 +68,8 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 		for state in queue:
 			childs.extend(get_childs(state))
 
+		childs = [list(x) for x in set(tuple(x) for x in childs)]
+
 		for state in childs: 
 			test(state)
 

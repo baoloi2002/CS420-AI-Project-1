@@ -6,6 +6,7 @@ MAX_STEP = 100
 MAX_SURVIVE = 5
 
 def class_count(state):
+	if len(state) == 0: return 0
 	c = 0
 	for i in range(size):
 		if state[i]:
@@ -13,12 +14,14 @@ def class_count(state):
 	return c.bit_count()
 
 def weight_count(state):
+	if len(state) == 0: return 0
 	return sum([weights[i] for i in range(size) if state[i]])
 
 def valid(state):
 	return weight_count(state) <= capacity
 
 def value_of(state):
+	if len(state) == 0: return 0
 	v = sum([values[i] for i in range(size) if state[i]])
 	return v
 
@@ -66,6 +69,8 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 		childs = []
 		for state in queue:
 			childs.extend(get_childs(state))
+
+		childs = [list(x) for x in set(tuple(x) for x in childs)]
 
 		for state in childs: 
 			test(state)
