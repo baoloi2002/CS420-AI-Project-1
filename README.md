@@ -20,3 +20,6 @@ Validate if the output is correct.
 ```
 python validate.py test/input/INPUT_[X].txt test/output_[algoName]/OUTPUT_[X].txt
 ```
+
+## Link to video demo
+https://drive.google.com/file/d/1KzXJyYrXGVSZ1mdBefHG5glH9ltQLAVW/view?usp=share_link
