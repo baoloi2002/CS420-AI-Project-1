@@ -85,6 +85,7 @@ def upSols(lstSol):
         updateSolution(u)
 
 def class_count(state):
+	if len(state) == 0: return 0
 	c = 0
 	for i in range(size):
 		if state[i]:
@@ -92,6 +93,7 @@ def class_count(state):
 	return c.bit_count()
 
 def weight_count(state):
+	if len(state) == 0: return 0
 	return sum([weights[i] for i in range(size) if state[i]])
 
 def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
@@ -100,7 +102,7 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
     point = calculatePoint(old_individual)
     upSols(old_individual)
     
-    #print(f'[local beam step {0}] >> value: {best}, weight: {weight_count(bestWay)}, class: {class_count(bestWay)}')
+    print(f'[local beam step {0}] >> value: {best}, weight: {weight_count(bestWay)}, class: {class_count(bestWay)}')
     for cycle in range(cycles):
         new_individual = list()
         sum = 0
@@ -122,7 +124,7 @@ def geneticAlgorithm(population, cycles, mutation):# mutation between 0..1
         old_individual = list(new_individual)
         upSols(old_individual)
         point = calculatePoint(old_individual)
-        #print(f'[Genetic 1 step {cycle+1}] >> value: {best}, weight: {weight_count(bestWay)}, class: {class_count(bestWay)}')
+        print(f'[Genetic 1 step {cycle+1}] >> value: {best}, weight: {weight_count(bestWay)}, class: {class_count(bestWay)}')
 
 def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
     global size, capacity, numClasses, weights, values, classes
