@@ -13,7 +13,7 @@ sys.setrecursionlimit(2000)
 
 debug = False
 
-def isOk(cur, w):
+def future(cur, w):
     d = []
     for i in range(cur, size):
         d.append([values[ind[i]]/weights[ind[i]], weights[ind[i]]])
@@ -41,14 +41,15 @@ def Try(cur, cap = 0, val = 0, cntClass = 0):
     if cur == size:
         return
 
-    if isOk(cur, capacity-cap) + val <= best:
-        return
-
-    # Future value + Current value < Optimal value
+    # Future value + Current value <= current Optimal value
+    # Method 1
     if val + suffixSumVal[cur] <= best:
         return
-    # Future value + Current value < Optimal value
+    # Method 2
     if val + suffixRate[cur]*(capacity-cap) <= best:
+        return
+    # Method 3
+    if future(cur, capacity-cap) + val <= best:
         return
 
     # Future number of class + Current number of class < Number of class
@@ -56,9 +57,9 @@ def Try(cur, cap = 0, val = 0, cntClass = 0):
         return
 
     for i in range(1,-1,-1):
-        f[cur] = i
+        f[ind[cur]] = i
         Try(cur+1, cap + i*weights[ind[cur]], val + i*values[ind[cur]], cntClass|(i*(1<<(classes[ind[cur]]))))
-        f[cur] = 0
+        f[ind[cur]] = 0
 
 
 def pre_calculate():
