@@ -1,5 +1,5 @@
-# CS418-AI-Project-1
-
+# CS420-AI-Project-1
+## Group 7 - 20CTT1
 ## Run main
 The custom variables are in the square brackets (`[]`).
 - `algo_module` is the file name of the module in `knapsack`, for example: `genetic`, `local_beam`, `genetic_0`. 

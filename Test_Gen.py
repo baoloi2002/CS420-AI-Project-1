@@ -31,9 +31,9 @@ def main(path, size):
 
 if __name__ == '__main__':
     index = 0
-#    for i in range(10):
-#        main("INPUT/INPUT_" + str(index) + ".txt", i*4 + 4)
-#        index += 1
-#    for i in range(10):
-#        main("INPUT/INPUT_" + str(index) + ".txt", i*100 + 100)
-#        index += 1
+    for i in range(10):
+        main("INPUT/INPUT_" + str(index) + ".txt", i*4 + 4)
+        index += 1
+    for i in range(10):
+        main("INPUT/INPUT_" + str(index) + ".txt", i*100 + 100)
+        index += 1
