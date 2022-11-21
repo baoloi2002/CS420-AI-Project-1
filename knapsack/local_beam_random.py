@@ -1,6 +1,6 @@
 # ALGORITHM 3
 # Local beam search
-import os
+import os, random
 
 MAX_STEP = 100
 MAX_SURVIVE = 5
@@ -59,8 +59,9 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 	global best_value, best_state
 	best_value, best_state = -1, []
 
-	initial_state = [0 for i in range(size)]
-	queue = [initial_state]
+	# initial_state = [0 for i in range(size)]
+	# queue = [initial_state]
+	queue = [[random.randint(0, 1) for _ in range(size)] for _ in range(MAX_SURVIVE)]
 	for step in range(size):
 		#print(f'>> local beam step: {step}')
 		childs = []
