@@ -22,4 +22,7 @@ python validate.py test/input/INPUT_[X].txt test/output_[algoName]/OUTPUT_[X].tx
 ```
 
 ## Link to video demo
+-Main link: 
+https://www.youtube.com/watch?v=DjnHMlSALTA&feature=youtu.be
+-Preventive link
 https://drive.google.com/file/d/1KzXJyYrXGVSZ1mdBefHG5glH9ltQLAVW/view?usp=share_link
