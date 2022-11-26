@@ -76,7 +76,7 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
 		for state in childs: 
 			test(state)
 
-		print(f'[local beam step {step}] >> value: {best_value}, weight: {weight_count(best_state)}, class: {class_count(best_state)}')
+		print(f'[local beam random step {step}] >> value: {best_value}, weight: {weight_count(best_state)}, class: {class_count(best_state)}')
 		
 		childs.sort(key=fitness, reverse=True)
 		queue = childs[:MAX_SURVIVE]

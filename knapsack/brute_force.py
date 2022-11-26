@@ -3,6 +3,7 @@
 
 import sys
 import os
+import time
 sys.setrecursionlimit(2000)
 
 
@@ -42,6 +43,10 @@ def solve(_size, _capacity, _numClasses, _weights, _values, _classes):
     best, bestWay = -1, []
     f = [0 for _ in range(size)]
 
+    start_time = time.time()
+
     Try(0)
 
+    print("--- %s seconds ---" % (time.time() - start_time))
+    
     return best, bestWay
