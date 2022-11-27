@@ -5,6 +5,3 @@ https://youtu.be/9VILHL2L3Ng
 https://drive.google.com/drive/folders/1pMEQLAdEgSPaqCRU_537vhF3wadn_LIm
 
 You can choose 1 of 2 link here to see the demo video in this project of our group. If one link is died, you can switch to another link
-
-Github:
-https://github.com/baoloi2002/CS420-AI-Project-1
