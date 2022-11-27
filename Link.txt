@@ -1,7 +1,7 @@
 Video demo:
--Main link: 
-https://www.youtube.com/watch?v=9VILHL2L3Ng&list=PLnMSJCnEJ-TdItVf4M0qRphTRq1nas_F4g
--Preventive link
+-Main link (Containing 2 videos): 
+https://www.youtube.com/playlist?list=PLnMSJCnEJ-TdItVf4M0qRphTRq1nas_F4
+-Preventive link (Containing 2 videos):
 https://drive.google.com/drive/folders/1pMEQLAdEgSPaqCRU_537vhF3wadn_LIm
 
 You can choose 1 of 2 link here to see the demo video in this project of our group. If one link is died, you can switch to another link
